@@ -55,6 +55,9 @@ func (a *TCPRouteConfigEntry) GetModifyIndex() uint64     { return a.ModifyIndex
 type TCPService struct {
 	Name string
 
+	// Limits are upstream circuit-breaker limits applied to this routed service.
+	Limits *UpstreamLimits `json:",omitempty"`
+
 	// Partition is the partition the config entry is associated with.
 	// Partitioning is a Consul Enterprise feature.
 	Partition string `json:",omitempty"`
@@ -270,6 +273,9 @@ type HTTPService struct {
 	// ResponseFilters is a list of HTTP-based filters used to modify the
 	// response returned from the upstream service
 	ResponseFilters HTTPResponseFilters
+
+	// Limits are upstream circuit-breaker limits applied to this routed service.
+	Limits *UpstreamLimits `json:",omitempty"`
 
 	// Partition is the partition the config entry is associated with.
 	// Partitioning is a Consul Enterprise feature.

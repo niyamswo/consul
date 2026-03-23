@@ -748,6 +748,9 @@ type APIGatewayConfigEntry struct {
 	// might bind.
 	Listeners []APIGatewayListener
 
+	// Defaults contains default upstream limits for all route destination services.
+	Defaults *UpstreamLimits `json:",omitempty"`
+
 	// Status is the asynchronous status which an APIGateway propagates to the user.
 	Status Status
 
@@ -824,6 +827,12 @@ func (e *APIGatewayConfigEntry) Normalize() error {
 func (e *APIGatewayConfigEntry) Validate() error {
 	if err := validateConfigEntryMeta(e.Meta); err != nil {
 		return err
+	}
+
+	if e.Defaults != nil {
+		if err := e.Defaults.Validate(); err != nil {
+			return err
+		}
 	}
 
 	if len(e.Listeners) == 0 {

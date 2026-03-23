@@ -233,7 +233,17 @@ func validateMatch(match HTTPMatch) error {
 }
 
 func validateHTTPService(service HTTPService) error {
-	return validateFilters(service.Filters)
+	if err := validateFilters(service.Filters); err != nil {
+		return err
+	}
+
+	if service.Limits != nil {
+		if err := service.Limits.Validate(); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func validateFilters(filter HTTPFilters) error {
@@ -533,6 +543,9 @@ type HTTPService struct {
 	// response returned from the upstream service
 	ResponseFilters HTTPResponseFilters
 
+	// Limits are upstream circuit-breaker limits applied to this routed service.
+	Limits *UpstreamLimits `json:",omitempty"`
+
 	acl.EnterpriseMeta `hcl:",squash" mapstructure:",squash"`
 }
 
@@ -651,6 +664,22 @@ func (e *TCPRouteConfigEntry) Validate() error {
 		return err
 	}
 
+	for i, service := range e.Services {
+		if err := validateTCPService(service); err != nil {
+			return fmt.Errorf("Service[%d], %w", i, err)
+		}
+	}
+
+	return nil
+}
+
+func validateTCPService(service TCPService) error {
+	if service.Limits != nil {
+		if err := service.Limits.Validate(); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
@@ -669,6 +698,9 @@ func (e *TCPRouteConfigEntry) CanWrite(authz acl.Authorizer) error {
 // TCPService is a service reference for a TCPRoute
 type TCPService struct {
 	Name string
+
+	// Limits are upstream circuit-breaker limits applied to this routed service.
+	Limits *UpstreamLimits `json:",omitempty"`
 
 	acl.EnterpriseMeta `hcl:",squash" mapstructure:",squash"`
 }
