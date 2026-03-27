@@ -18,7 +18,7 @@ PROTOC_GEN_GO_GRPC_VERSION='v1.5.1'
 MOG_VERSION='ee61dbb3714674e897406d364d14c6d2e6b2e89f'
 PROTOC_GO_INJECT_TAG_VERSION='v1.3.0'
 PROTOC_GEN_GO_BINARY_VERSION='v0.1.0'
-DEEP_COPY_VERSION='dc4a8d91ed65656858cd53e6e83bbf7b83d5b7cb'
+DEEP_COPY_VERSION='7cda106f7b4b4e5006f0d663a2f768659809efbc'
 COPYWRITE_TOOL_VERSION='v0.16.4'
 LINT_CONSUL_RETRY_VERSION='v1.4.0'
 # Go imports formatter
@@ -269,7 +269,7 @@ lint: $(foreach mod,$(GO_MODULES),lint/$(mod)) lint-container-test-deps ## Lint 
 .PHONY: lint/%
 lint/%:
 	@echo "--> Running golangci-lint ($*)"
-	@cd $* && GOWORK=off golangci-lint run --build-tags '$(GOTAGS)'
+	@cd $* && GOWORK=off golangci-lint run --fix --build-tags '$(GOTAGS)'
 	@echo "--> Running lint-consul-retry ($*)"
 	@cd $* && GOWORK=off lint-consul-retry
 	@echo "--> Running enumcover ($*)"
