@@ -22,7 +22,7 @@ jobs:
     uses: ./.github/workflows/reusable-get-go-version.yml
 
   set-product-version:
-    runs-on: ubuntu-latest
+    runs-on: s390x
     outputs:
       product-version: ${{ steps.set-product-version.outputs.product-version }}
       base-product-version: ${{ steps.set-product-version.outputs.base-product-version }}
@@ -52,7 +52,7 @@ jobs:
           " >> "$GITHUB_OUTPUT"
   validate-outputs:
     needs: set-product-version
-    runs-on: ubuntu-latest
+    runs-on: s390x
     steps:
       - name: Validate Outputs
         run: |
@@ -65,7 +65,7 @@ jobs:
 
   generate-metadata-file:
     needs: set-product-version
-    runs-on: ubuntu-latest
+    runs-on: s390x
     outputs:
       filepath: ${{ steps.generate-metadata-file.outputs.filepath }}
     steps:
@@ -87,7 +87,7 @@ jobs:
     needs:
       - set-product-version
       - get-go-version
-    runs-on: ubuntu-latest
+    runs-on: s390x
     strategy:
       matrix:
         include:
@@ -95,6 +95,7 @@ jobs:
           - { goos: "linux", goarch: "amd64" }
           - { goos: "linux", goarch: "arm" }
           - { goos: "linux", goarch: "arm64" }
+          - { goos: "linux", goarch: "s390x" }
           - { goos: "darwin", goarch: "amd64" }
           - { goos: "darwin", goarch: "arm64" }
           - { goos: "freebsd", goarch: "386" }
@@ -265,7 +266,7 @@ jobs:
     needs:
       - set-product-version
       - build
-    runs-on: ubuntu-latest
+    runs-on: s390x
     strategy:
       matrix:
         include:
@@ -273,6 +274,7 @@ jobs:
           - { arch: "arm" }
           - { arch: "amd64" }
           - { arch: "arm64" }
+          - { arch: "s390x" }
     env:
       repo: ${{github.event.repository.name}}
       version: ${{needs.set-product-version.outputs.product-version}}
@@ -310,7 +312,7 @@ jobs:
     needs:
       - set-product-version
       - build
-    runs-on: ubuntu-latest
+    runs-on: s390x
     env:
       repo: ${{github.event.repository.name}}
       version: ${{needs.set-product-version.outputs.product-version}}
@@ -348,7 +350,7 @@ jobs:
       - set-product-version
       - build
       - build-s390x
-    runs-on: ubuntu-latest
+    runs-on: s390x
     strategy:
       matrix:
         include:
@@ -389,7 +391,7 @@ jobs:
       - build
       - build-s390x
       - set-product-version
-    runs-on: ubuntu-latest
+    runs-on: s390x
     strategy:
       matrix:
         include:
@@ -432,7 +434,7 @@ jobs:
       - build
       - build-s390x
       - set-product-version
-    runs-on: ubuntu-latest
+    runs-on: s390x
     strategy:
       matrix:
         include:

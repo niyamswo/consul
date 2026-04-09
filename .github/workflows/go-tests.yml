@@ -36,7 +36,7 @@ jobs:
     needs: [conditional-skip]
     name: Setup
     if: needs.conditional-skip.outputs.skip-ci != 'true'
-    runs-on: ubuntu-latest
+    runs-on: s390x
     outputs:
       compute-small: ${{ steps.setup-outputs.outputs.compute-small }}
       compute-medium: ${{ steps.setup-outputs.outputs.compute-medium }}
@@ -502,7 +502,7 @@ jobs:
       datadog-api-key: "${{ !endsWith(github.repository, '-enterprise') && secrets.DATADOG_API_KEY || '' }}"
 
   noop:
-    runs-on: ubuntu-latest
+    runs-on: s390x
     steps:
       - run: "echo ok"
 
