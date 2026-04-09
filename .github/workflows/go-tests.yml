@@ -41,6 +41,7 @@ jobs:
       compute-small: ${{ steps.setup-outputs.outputs.compute-small }}
       compute-medium: ${{ steps.setup-outputs.outputs.compute-medium }}
       compute-large: ${{ steps.setup-outputs.outputs.compute-large }}
+      compute-s390x: ${{ steps.setup-outputs.outputs.compute-s390x }}
       compute-xl: ${{ steps.setup-outputs.outputs.compute-xl }}
     steps:
     - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
@@ -195,20 +196,20 @@ jobs:
     secrets:
       elevated-github-token: ${{ secrets.ELEVATED_GITHUB_TOKEN }}
 
-  # dev-build-s390x:
-  #   if: ${{ endsWith(github.repository, '-enterprise') }}
-  #   needs:
-  #   - setup
-  #   - get-go-version
-  #   uses: ./.github/workflows/reusable-dev-build.yml
-  #   with:
-  #     uploaded-binary-name: 'consul-bin-s390x'
-  #     runs-on: ${{ needs.setup.outputs.compute-large }}
-  #     go-arch: "s390x"
-  #     go-version: ${{ needs.get-go-version.outputs.go-version }}
-  #     repository-name: ${{ github.repository }}
-  #   secrets:
-  #     elevated-github-token: ${{ secrets.ELEVATED_GITHUB_TOKEN }}
+  dev-build-s390x:
+    if: ${{ endsWith(github.repository, '-enterprise') }}
+    needs:
+    - setup
+    - get-go-version
+    uses: ./.github/workflows/reusable-dev-build.yml
+    with:
+      uploaded-binary-name: 'consul-bin-s390x'
+      runs-on: ${{ needs.setup.outputs.compute-s390x }}
+      go-arch: "s390x"
+      go-version: ${{ needs.get-go-version.outputs.go-version }}
+      repository-name: ${{ github.repository }}
+    secrets:
+      elevated-github-token: ${{ secrets.ELEVATED_GITHUB_TOKEN }}
 
   # dev-build-arm64:
   #   # only run on enterprise because GHA does not have arm64 runners in CE
@@ -334,28 +335,29 @@ jobs:
       consul-license: ${{secrets.CONSUL_LICENSE}}
       datadog-api-key: "${{ !endsWith(github.repository, '-enterprise') && secrets.DATADOG_API_KEY || '' }}"
 
-  # go-test-s390x:
-  #   if: ${{ endsWith(github.repository, '-enterprise') }}
-  #   needs:
-  #   - setup
-  #   - get-go-version
-  #   - dev-build-s390x
-  #   uses: ./.github/workflows/reusable-unit.yml
-  #   with:
-  #     uploaded-binary-name: 'consul-bin-s390x'
-  #     directory: .
-  #     go-test-flags: -short"
-  #     runs-on: ${{ needs.setup.outputs.compute-large }}
-  #     repository-name: ${{ github.repository }}
-  #     go-tags: "${{ github.event.repository.name == 'consul-enterprise' && 'consulent consuldev' || '' }}"
-  #     go-version: ${{ needs.get-go-version.outputs.go-version }}
-  #   permissions:
-  #     id-token: write # NOTE: this permission is explicitly required for Vault auth.
-  #     contents: read
-  #   secrets:
-  #     elevated-github-token: ${{ secrets.ELEVATED_GITHUB_TOKEN }}
-  #     consul-license: ${{secrets.CONSUL_LICENSE}}
-  #     datadog-api-key: "${{ !endsWith(github.repository, '-enterprise') && secrets.DATADOG_API_KEY || '' }}"
+  go-test-s390x:
+    if: ${{ endsWith(github.repository, '-enterprise') }}
+    needs:
+    - setup
+    - get-go-version
+    - dev-build-s390x
+    uses: ./.github/workflows/reusable-unit.yml
+    with:
+      uploaded-binary-name: 'consul-bin-s390x'
+      directory: .
+      go-arch: "s390x"
+      go-test-flags: "-short"
+      runs-on: ${{ needs.setup.outputs.compute-s390x }}
+      repository-name: ${{ github.repository }}
+      go-tags: "${{ github.event.repository.name == 'consul-enterprise' && 'consulent consuldev' || '' }}"
+      go-version: ${{ needs.get-go-version.outputs.go-version }}
+    permissions:
+      id-token: write # NOTE: this permission is explicitly required for Vault auth.
+      contents: read
+    secrets:
+      elevated-github-token: ${{ secrets.ELEVATED_GITHUB_TOKEN }}
+      consul-license: ${{secrets.CONSUL_LICENSE}}
+      datadog-api-key: "${{ !endsWith(github.repository, '-enterprise') && secrets.DATADOG_API_KEY || '' }}"
 
   go-test-envoyextensions:
     needs:
@@ -534,6 +536,7 @@ jobs:
     - go-test-enterprise
     - go-test-ce
     - go-test-race
+    - go-test-s390x
     - go-test-envoyextensions
     - go-test-troubleshoot
     - go-test-api-backwards-compatibility
@@ -542,7 +545,6 @@ jobs:
     - go-test-sdk
     - go-test-32bit
     - go-test-testing-deployer
-    # - go-test-s390x
     runs-on: ${{ fromJSON(needs.setup.outputs.compute-small) }}
     if: always() && needs.conditional-skip.outputs.skip-ci != 'true'
     steps:

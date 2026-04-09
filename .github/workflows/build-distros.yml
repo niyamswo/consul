@@ -29,6 +29,7 @@ jobs:
       compute-small: ${{ steps.setup-outputs.outputs.compute-small }}
       compute-medium: ${{ steps.setup-outputs.outputs.compute-medium }}
       compute-large: ${{ steps.setup-outputs.outputs.compute-large }}
+      compute-s390x: ${{ steps.setup-outputs.outputs.compute-s390x }}
       compute-xl: ${{ steps.setup-outputs.outputs.compute-xl }}
     steps:
     - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
@@ -136,7 +137,7 @@ jobs:
     - setup
     - get-go-version
     - check-go-mod
-    runs-on: ${{ fromJSON(needs.setup.outputs.compute-xl) }}
+    runs-on: ${{ fromJSON(needs.setup.outputs.compute-s390x) }}
     steps:
     - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
 

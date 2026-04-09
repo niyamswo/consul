@@ -204,7 +204,7 @@ jobs:
       - set-product-version
       - get-go-version
     if: ${{ endsWith(github.repository, '-enterprise') }}
-    runs-on: ubuntu-latest
+    runs-on: s390x
     strategy:
       matrix:
         include:
@@ -347,6 +347,7 @@ jobs:
     needs:
       - set-product-version
       - build
+      - build-s390x
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -355,6 +356,7 @@ jobs:
           - { arch: "arm" }
           - { arch: "amd64" }
           - { arch: "arm64" }
+          - { arch: "s390x" }
       fail-fast: true
     env:
       version: ${{ needs.set-product-version.outputs.product-version }}
@@ -373,10 +375,10 @@ jobs:
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@68827325e0b33c7199eb31dd4e31fbe9023e06e3 # v3.0.0
-        if: ${{ matrix.arch == 'arm' || matrix.arch == 'arm64' }}
+        if: ${{ matrix.arch == 'arm' || matrix.arch == 'arm64' || matrix.arch == 's390x' }}
         with:
           # this should be a comma-separated string as opposed to an array
-          platforms: arm,arm64
+          platforms: arm,arm64,s390x
 
       - name: Run verification for ${{ matrix.arch }} binary
         if: ${{ endsWith(github.repository, '-enterprise') || matrix.arch != 's390x' }}
@@ -385,6 +387,7 @@ jobs:
   verify-linux-packages-deb:
     needs:
       - build
+      - build-s390x
       - set-product-version
     runs-on: ubuntu-latest
     strategy:
@@ -394,6 +397,7 @@ jobs:
           - { arch: "armhf" }
           - { arch: "amd64" }
           - { arch: "arm64" }
+          - { arch: "s390x" }
       # fail-fast: true
     env:
       version: ${{ needs.set-product-version.outputs.product-version }}
@@ -426,6 +430,7 @@ jobs:
   verify-linux-packages-rpm:
     needs:
       - build
+      - build-s390x
       - set-product-version
     runs-on: ubuntu-latest
     strategy:
@@ -433,6 +438,7 @@ jobs:
         include:
           - { arch: "i386" }
           - { arch: "x86_64" }
+          - { arch: "s390x" }
         # TODO(eculver): re-enable when there is a smaller verification container available
         # - { arch: "armv7hl" }
         # - { arch: "aarch64" }

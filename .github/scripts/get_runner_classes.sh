@@ -13,6 +13,7 @@ case "$GITHUB_REPOSITORY" in
 	echo "compute-small=['self-hosted', 'linux', 'small']" >>"$GITHUB_OUTPUT"
 	echo "compute-medium=['self-hosted', 'linux', 'medium']" >>"$GITHUB_OUTPUT"
 	echo "compute-large=['self-hosted', 'linux', 'large']" >>"$GITHUB_OUTPUT"
+	echo "compute-s390x=['self-hosted', 'linux', 's390x']" >>"$GITHUB_OUTPUT"
 	# m5d.8xlarge is equivalent to our xl custom runner in CE
 	echo "compute-xl=['self-hosted', 'ondemand', 'linux', 'type=m6a.2xlarge']" >>"$GITHUB_OUTPUT"
 	;;
@@ -21,6 +22,7 @@ case "$GITHUB_REPOSITORY" in
 	echo "compute-small=['custom-linux-s-consul-latest']" >>"$GITHUB_OUTPUT"
 	echo "compute-medium=['custom-linux-m-consul-latest']" >>"$GITHUB_OUTPUT"
 	echo "compute-large=['custom-linux-l-consul-latest']" >>"$GITHUB_OUTPUT"
+	echo "compute-s390x=['s390x']" >>"$GITHUB_OUTPUT"
 	echo "compute-xl=['custom-linux-xl-consul-latest']" >>"$GITHUB_OUTPUT"
 	;;
 esac
