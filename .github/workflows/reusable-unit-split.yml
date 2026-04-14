@@ -172,12 +172,12 @@ jobs:
           DD_ENV: ci
         run: datadog-ci junit upload --service "$GITHUB_REPOSITORY" ${{env.TEST_RESULTS}}/gotestsum-report.xml
 
-      - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: ${{ !cancelled() }}
         with:
           name: ${{ steps.generate-matrix-id.outputs.matrix-run-id }}-test-results
           path: ${{env.TEST_RESULTS}}
-      - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: ${{ !cancelled() }}
         with:
           name: ${{ steps.generate-matrix-id.outputs.matrix-run-id }}-jsonfile
