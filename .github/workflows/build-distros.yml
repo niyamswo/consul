@@ -24,7 +24,7 @@ concurrency:
 jobs:
   setup:
     name: Setup
-    runs-on: s390x
+    runs-on: ubuntu-latest
     outputs:
       compute-small: ${{ steps.setup-outputs.outputs.compute-small }}
       compute-medium: ${{ steps.setup-outputs.outputs.compute-medium }}

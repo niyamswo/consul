@@ -59,7 +59,7 @@ env:
   
 jobs:
   set-test-package-matrix:
-    runs-on: s390x
+    runs-on: ubuntu-latest
     outputs:
       package-matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
