@@ -113,7 +113,7 @@ jobs:
           cache-dependency-path: "ui/pnpm-lock.yaml"
 
       - name: Install Chrome
-        uses: browser-actions/setup-chrome@82b9ce628cc5595478a9ebadc480958a36457dc2 # v1.6.0
+        uses: browser-actions/setup-chrome@2e1d749697dd1612b833dba4a722266286fbefcd # v2.1.2
 
       - name: Install dependencies
         working-directory: ui
@@ -159,7 +159,7 @@ jobs:
           cache-dependency-path: "ui/pnpm-lock.yaml"
 
       - name: Install Chrome
-        uses: browser-actions/setup-chrome@82b9ce628cc5595478a9ebadc480958a36457dc2 # v1.6.0
+        uses: browser-actions/setup-chrome@2e1d749697dd1612b833dba4a722266286fbefcd # v2.1.2
 
       - name: Install dependencies
         working-directory: ui
