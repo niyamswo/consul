@@ -27,7 +27,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/acmpca v1.46.6
 	github.com/aws/smithy-go v1.24.0
 	github.com/coreos/go-oidc/v3 v3.18.0
-	github.com/deckarep/golang-set/v2 v2.3.1
+	github.com/deckarep/golang-set/v2 v2.9.0
 	github.com/docker/go-connections v0.4.0
 	github.com/envoyproxy/go-control-plane v0.14.0
 	github.com/envoyproxy/go-control-plane/contrib v1.32.4
@@ -266,6 +266,7 @@ require (
 	github.com/xeipuuv/gojsonpointer v0.0.0-20190905194746-02993c407bfb // indirect
 	github.com/xeipuuv/gojsonreference v0.0.0-20180127040603-bd5ef7bd5415 // indirect
 	github.com/yusufpapurcu/wmi v1.2.2 // indirect
+	go.mongodb.org/mongo-driver v1.17.4 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.49.0 // indirect
